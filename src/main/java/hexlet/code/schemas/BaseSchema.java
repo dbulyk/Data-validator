@@ -15,7 +15,7 @@ public class BaseSchema {
     }
 
     /**
-     * @param o - some string
+     * @param o - Checked string
      * @return boolean
      */
     public boolean isValid(Object o) {
