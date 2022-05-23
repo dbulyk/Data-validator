@@ -4,17 +4,18 @@ import java.util.Map;
 
 public class MapSchema extends BaseSchema {
     public final MapSchema required() {
-        super.addPredicate(p -> p instanceof Map);
+        super.addRule(p -> p instanceof Map);
         return this;
     }
 
     public final MapSchema sizeof(int count) {
-        super.addPredicate(p -> p instanceof Map && ((Map<?, ?>) p).size() == count);
+        required();
+        super.addRule(p -> ((Map<?, ?>) p).size() == count);
         return this;
     }
 
     public final MapSchema shape(Map<String, BaseSchema> schemas) {
-        super.addPredicate(p -> {
+        super.addRule(p -> {
             for (Map.Entry<String, Object> entry : ((Map<String, Object>) p).entrySet()) {
                 if (!schemas.get(entry.getKey()).isValid(entry.getValue())) {
                     return false;
