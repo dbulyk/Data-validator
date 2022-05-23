@@ -10,7 +10,7 @@ public class MapSchema extends BaseSchema {
 
     public final MapSchema sizeof(int count) {
         required();
-        super.addRule(p -> ((Map<?, ?>) p).size() == count);
+        super.addRule(p -> p instanceof Map && ((Map<?, ?>) p).size() == count);
         return this;
     }
 

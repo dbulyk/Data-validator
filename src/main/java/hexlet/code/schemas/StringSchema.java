@@ -7,8 +7,7 @@ public class StringSchema extends BaseSchema {
     }
 
     public final StringSchema minLength(int length) {
-        required();
-        super.addRule(p -> String.valueOf(p).length() >= length);
+        super.addRule(p -> p instanceof String && String.valueOf(p).length() >= length);
         return this;
     }
 
