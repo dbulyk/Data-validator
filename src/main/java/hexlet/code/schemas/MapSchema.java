@@ -29,5 +29,4 @@ public final class MapSchema extends BaseSchema<Map> {
         });
         return this;
     }
-
 }
