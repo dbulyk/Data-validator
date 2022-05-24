@@ -1,18 +1,25 @@
 package hexlet.code.schemas;
 
-public class StringSchema extends BaseSchema {
-    public final StringSchema required() {
-        super.addRule(p -> p instanceof String && !String.valueOf(p).isEmpty());
+import java.util.Objects;
+
+public final class StringSchema extends BaseSchema<String> {
+    @Override
+    public boolean isValid(Object parameter) {
+        return (parameter == null || parameter instanceof String) && super.isValid(parameter);
+    }
+
+    public StringSchema required() {
+        addRule(p -> (p != null && !(Objects.equals(p, ""))));
         return this;
     }
 
-    public final StringSchema minLength(int length) {
-        super.addRule(p -> p instanceof String && String.valueOf(p).length() >= length);
+    public StringSchema contains(String strToCompare) {
+        addRule(p -> (p != null && p.contains(strToCompare)));
         return this;
     }
 
-    public final StringSchema contains(String s) {
-        super.addRule(p -> p instanceof String && String.valueOf(p).contains(s));
+    public StringSchema minLength(int minLength) {
+        addRule(p -> (p != null && p.length() >= minLength));
         return this;
     }
 }

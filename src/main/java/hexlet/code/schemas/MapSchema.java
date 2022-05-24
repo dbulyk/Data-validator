@@ -2,22 +2,26 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public class MapSchema extends BaseSchema {
-    public final MapSchema required() {
-        super.addRule(p -> p instanceof Map);
+public final class MapSchema extends BaseSchema<Map> {
+    @Override
+    public boolean isValid(Object parameter) {
+        return (parameter == null || parameter instanceof Map) && super.isValid(parameter);
+    }
+
+    public MapSchema required() {
+        super.addRule(p -> p != null);
         return this;
     }
 
-    public final MapSchema sizeof(int count) {
-        required();
-        super.addRule(p -> p instanceof Map && ((Map<?, ?>) p).size() == count);
+    public MapSchema sizeof(int count) {
+        super.addRule(p -> p != null && p.size() == count);
         return this;
     }
 
-    public final MapSchema shape(Map<String, BaseSchema> schemas) {
-        super.addRule(p -> {
-            for (Map.Entry<String, Object> entry : ((Map<String, Object>) p).entrySet()) {
-                if (!schemas.get(entry.getKey()).isValid(entry.getValue())) {
+    public MapSchema shape(Map<String, BaseSchema> schema) {
+        addRule(p -> {
+            for (Object key: p.keySet()) {
+                if (!schema.get(key).isValid(p.get(key))) {
                     return false;
                 }
             }
@@ -25,4 +29,5 @@ public class MapSchema extends BaseSchema {
         });
         return this;
     }
+
 }
